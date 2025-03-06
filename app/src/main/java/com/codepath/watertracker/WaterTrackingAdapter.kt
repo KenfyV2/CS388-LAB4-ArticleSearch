@@ -3,18 +3,22 @@ package com.codepath.watertracker
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class WaterEntryAdapter(private var entries: List<WaterEntry>) :
-    RecyclerView.Adapter<WaterEntryAdapter.WaterEntryViewHolder>() {
+class WaterEntryAdapter(
+    private var entries: List<WaterEntry>,
+    private val onDeleteClickListener: (WaterEntry) -> Unit
+) : RecyclerView.Adapter<WaterEntryAdapter.WaterEntryViewHolder>() {
 
     class WaterEntryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val amountTextView: TextView = itemView.findViewById(R.id.waterAmountTextView)
         private val dateTextView: TextView = itemView.findViewById(R.id.waterDateTextView)
+        val deleteButton: ImageButton = itemView.findViewById(R.id.deleteEntryButton)
 
         fun bind(entry: WaterEntry) {
             amountTextView.text = "${entry.amount} ml"
@@ -30,7 +34,11 @@ class WaterEntryAdapter(private var entries: List<WaterEntry>) :
     }
 
     override fun onBindViewHolder(holder: WaterEntryViewHolder, position: Int) {
-        holder.bind(entries[position])
+        val entry = entries[position]
+        holder.bind(entry)
+        holder.deleteButton.setOnClickListener {
+            onDeleteClickListener(entry)
+        }
     }
 
     override fun getItemCount() = entries.size

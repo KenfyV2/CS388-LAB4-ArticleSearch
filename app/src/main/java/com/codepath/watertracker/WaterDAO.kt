@@ -1,6 +1,7 @@
 package com.codepath.watertracker
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
@@ -12,6 +13,9 @@ interface WaterEntryDao {
 
     @Insert
     suspend fun insert(waterEntry: WaterEntry)
+
+    @Delete
+    suspend fun delete(waterEntry: WaterEntry)
 
     @Query("SELECT AVG(amount) FROM water_entries")
     suspend fun getAverageWaterIntake(): Double
