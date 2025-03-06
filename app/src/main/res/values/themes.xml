@@ -2,15 +2,75 @@
     <!-- Base application theme. -->
     <style name="Theme.WaterTracker" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/colorAccent</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/colorText</item>
+        <item name="android:textColorSecondary">@color/colorTextSecondary</item>
+
+        <!-- Custom text appearances -->
+        <item name="textAppearanceHeadline6">@style/TextAppearance.WaterTracker.Headline6</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.WaterTracker.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.WaterTracker.Body2</item>
+
+        <!-- Custom shape appearance -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.WaterTracker.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.WaterTracker.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.WaterTracker.LargeComponent</item>
+    </style>
+
+    <!-- Text styles -->
+    <style name="TextAppearance.WaterTracker.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <!-- Remove the fontFamily references -->
+    </style>
+
+    <style name="TextAppearance.WaterTracker.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <!-- Remove the fontFamily references -->
+    </style>
+
+    <style name="TextAppearance.WaterTracker.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <!-- Remove the fontFamily references -->
+        <item name="android:textColor">@color/colorTextSecondary</item>
+    </style>
+
+    <!-- Shape styles -->
+    <style name="ShapeAppearance.WaterTracker.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="ShapeAppearance.WaterTracker.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="ShapeAppearance.WaterTracker.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <!-- Button styles -->
+    <style name="Widget.WaterTracker.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:padding">12dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.WaterTracker.Body1</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <!-- Card styles -->
+    <style name="Widget.WaterTracker.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardBackgroundColor">@color/colorSurface</item>
     </style>
 </resources>
