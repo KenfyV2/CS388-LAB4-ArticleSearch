@@ -1,4 +1,4 @@
-package com.codepath.articlesearch
+package com.codepath.watertracker
 
 import android.view.LayoutInflater
 import android.view.View

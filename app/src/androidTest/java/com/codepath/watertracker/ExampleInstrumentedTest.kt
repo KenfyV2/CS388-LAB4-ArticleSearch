@@ -1,4 +1,4 @@
-package com.codepath.articlesearch
+package com.codepath.watertracker
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

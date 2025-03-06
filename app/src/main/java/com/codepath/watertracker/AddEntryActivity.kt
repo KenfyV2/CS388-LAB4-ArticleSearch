@@ -1,10 +1,10 @@
-package com.codepath.articlesearch
+package com.codepath.watertracker
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.codepath.articlesearch.databinding.ActivityAddEntryBinding
+import com.codepath.watertracker.databinding.ActivityAddEntryBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

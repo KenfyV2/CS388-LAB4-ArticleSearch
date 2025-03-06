@@ -1,12 +1,11 @@
-package com.codepath.articlesearch
+package com.codepath.watertracker
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.codepath.articlesearch.databinding.ActivityMainBinding
-import kotlinx.coroutines.Dispatchers
+import com.codepath.watertracker.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
