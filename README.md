@@ -4,7 +4,7 @@ Submitted by: **Andrew Lugo**
 
 **WaterTracker** is a health metrics app that allows users to track ... [TODO] 
 
-Time spent: **10** hours spent in total
+Time spent: **25** hours spent in total
 
 ## Required Features
 
@@ -19,20 +19,21 @@ The following **required** functionality is completed:
 The following **optional** features are implemented:
 
 - [ ] **Create a UI for tracking averages and trends in metrics**
-- [ ] **Improve and customize the user interface through styling and coloring**
-- [ ] **Implement orientation responsivity**
+- [X] **Improve and customize the user interface through styling and coloring**
+- [X] **Implement orientation responsivity**
 - [ ] **Add a daily photo feature**
 
 The following **additional** features are implemented:
 
 - [ ] List anything else that you can get done to improve the app functionality!
+- [X] Added Drop
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://imgur.com/a/PKAonXu.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-[LINK HERE](https://imgur.com/a/PKAonXu)
+<img src='https://imgur.com/a/ZJXjzaR.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+[LINK HERE](https://imgur.com/a/ZJXjzaR)
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with ...  
 <!-- Recommended tools:
