@@ -3,41 +3,38 @@ package com.codepath.watertracker
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.codepath.watertracker.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.codepath.watertracker.databinding.FragmentHomeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class HomeFragment : Fragment() {
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var waterEntryDao: WaterEntryDao
     private lateinit var waterEntryAdapter: WaterEntryAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        val navView: BottomNavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment)
-
-        // Set up the bottom navigation with the nav controller
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.navigation_home, R.id.navigation_dashboard)
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Initialize database and DAO
-        val database = WaterTrackingDatabase.getDatabase(this)
+        val database = WaterTrackingDatabase.getDatabase(requireContext())
         waterEntryDao = database.waterEntryDao()
 
         // Setup RecyclerView
@@ -49,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         setRecyclerViewLayoutManager(resources.configuration.orientation)
 
         // Observe database entries
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             waterEntryDao.getAllEntries().collect { entries ->
                 waterEntryAdapter.updateEntries(entries)
                 updateGoalProgress(entries)
@@ -58,12 +55,12 @@ class MainActivity : AppCompatActivity() {
 
         // Add new entry button
         binding.addEntryButton.setOnClickListener {
-            startActivity(Intent(this, AddEntryActivity::class.java))
+            startActivity(Intent(requireContext(), AddEntryActivity::class.java))
         }
     }
 
     private fun deleteWaterEntry(entry: WaterEntry) {
-        lifecycleScope.launch(Dispatchers.IO) {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             waterEntryDao.delete(entry)
         }
     }
@@ -88,10 +85,10 @@ class MainActivity : AppCompatActivity() {
 
             layoutManager = if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 // Use GridLayoutManager in landscape
-                GridLayoutManager(this@MainActivity, 2)
+                GridLayoutManager(requireContext(), 2)
             } else {
                 // Use LinearLayoutManager in portrait
-                LinearLayoutManager(this@MainActivity)
+                LinearLayoutManager(requireContext())
             }
         }
     }
@@ -99,5 +96,10 @@ class MainActivity : AppCompatActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         setRecyclerViewLayoutManager(newConfig.orientation)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
