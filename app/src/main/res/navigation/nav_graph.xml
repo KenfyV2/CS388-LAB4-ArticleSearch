@@ -16,4 +16,10 @@
         android:name="com.codepath.watertracker.DashboardFragment"
         android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.codepath.watertracker.SettingsFragment"
+        android:label="Setting"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
