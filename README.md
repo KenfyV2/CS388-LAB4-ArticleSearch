@@ -1,8 +1,8 @@
-# Android Project 5 - *WaterTracker*
+# Android Project 6 - *WaterTracker2*
 
 Submitted by: **Andrew Lugo**
 
-**WaterTracker** is a health metrics app that allows users to track ... [TODO] 
+**WaterTracker2** is a health metrics app that allows users to track Water Intake
 
 Time spent: **25** hours spent in total
 
@@ -10,30 +10,29 @@ Time spent: **25** hours spent in total
 
 The following **required** functionality is completed:
 
-- [X] **At least one health metric is tracked (based on user input)**
-  - Chosen metric(s): `[TODO: FILL ME IN TO GET CREDIT]`
-- [X] **There is a "create entry" UI that prompts users to make their daily entry**
-- [X] **New entries are saved in a database and then updated in the RecyclerView**
-- [X] **On application restart, previously entered entries are preserved (i.e., are *persistent*)**
- 
+- [X] **Use at least 2 Fragments**
+- [X] **Create a new dashboard fragment where users can see a summary of their entered data**
+- [X] **Use one of the Navigation UI Views (BottomNavigation, Drawer Layout, Top Bar) to move between the fragments**
+
 The following **optional** features are implemented:
 
-- [ ] **Create a UI for tracking averages and trends in metrics**
-- [X] **Improve and customize the user interface through styling and coloring**
-- [X] **Implement orientation responsivity**
-- [ ] **Add a daily photo feature**
+- [X] **Add a more advanced UI (e.g: Graphing) for tracking trends in metrics**
+- [X] **Implement daily notifications to prompt users to fill in their data**
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
-- [X] Added Drop
+- [X] List anything else that you can get done to improve the app functionality!
+- [X] Made a Settings Nav
+- [X] That allows you to put notification at a specific time
+- [X] Also change the water goal on the home page
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://imgur.com/a/ZJXjzaR.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-[LINK HERE](https://imgur.com/a/ZJXjzaR)
+<img src='https://imgur.com/a/50qA8LB.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+[Link Here](https://imgur.com/a/50qA8LB)
+
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with ...  
 <!-- Recommended tools:
