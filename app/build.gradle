@@ -6,6 +6,10 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def apikeyPropertiesFile = rootProject.file("apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdk 34
 
@@ -17,8 +21,11 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_KEY", apikeyProperties['API_KEY'])
     }
 
+    namespace 'com.codepath.watertracker'
     buildTypes {
         release {
             minifyEnabled false
@@ -28,70 +35,47 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig true
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
-
     kotlinOptions {
-        jvmTarget = "1.8" // Set Kotlin to target Java 1.8
+        jvmTarget = '17'
     }
 
-    namespace 'com.codepath.watertracker'
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
 }
 
 dependencies {
-    def room_version = "2.4.3"
-    def lifecycle_version = "2.5.1"
-    def navigation_version = "2.6.0"
-    def glide_version = "4.13.2"
-    def coroutines_version = "1.6.1"
-    def kotlinx_serialization_version = "1.3.3"
-    def recyclerview_version = "1.2.1"
-    def material_version = "1.6.1"
-
-    // Room Database
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-
-    // Kotlin Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-
-    // Lifecycle Components
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-
-    // Fragment and Navigation
-    implementation "androidx.fragment:fragment-ktx:1.5.0"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
-
-    // Kotlin & Android Extensions
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.20" // Update to latest Kotlin version
-    implementation "androidx.core:core-ktx:1.8.0"
-    implementation "androidx.appcompat:appcompat:1.4.2"
-    implementation "com.google.android.material:material:$material_version"
-    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-    implementation "com.codepath.libraries:asynchttpclient:2.2.0"
-
-    // RecyclerView & Selection
-    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
-    implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
-
-    // Glide for Image Loading
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
-
-    // Gson for JSON Parsing
-    implementation "com.google.code.gson:gson:2.9.0"
-
-    // Kotlinx Serialization for JSON Parsing
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_serialization_version"
-
-    // Testing Libraries
+    implementation "androidx.room:room-ktx:2.5.0"
+    implementation "androidx.room:room-runtime:2.5.0" // Check for the latest version
+    kapt "androidx.room:room-compiler:2.5.0"
+    implementation "androidx.room:room-paging:2.5.0"
+    testImplementation "androidx.room:room-testing:2.5.0"
+    implementation "androidx.navigation:navigation-fragment:2.7.6"
+    implementation "androidx.navigation:navigation-ui:2.7.6"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.7.6"
+    implementation "androidx.navigation:navigation-ui-ktx:2.7.6"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.codepath.libraries:asynchttpclient:2.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3'
+    kapt 'com.github.bumptech.glide:compiler:4.13.2'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation "androidx.test.ext:junit:1.1.3"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
