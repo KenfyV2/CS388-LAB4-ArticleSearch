@@ -11,9 +11,11 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import java.util.Calendar
+import android.provider.Settings
+import android.net.Uri
+import android.util.Log
 
 object NotificationHelper {
-
     private const val CHANNEL_ID = "water_reminder_channel"
     private const val CHANNEL_NAME = "Water Reminders"
     private const val CHANNEL_DESC = "Daily reminders to track your water intake"
@@ -57,14 +59,32 @@ object NotificationHelper {
             }
         }
 
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
+        try {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.timeInMillis,
+                    pendingIntent
+                )
+            } else {
+                // Ask the user to grant permission
+                requestExactAlarmPermission(context)
+            }
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+            requestExactAlarmPermission(context)
+        }
     }
 
+    fun requestExactAlarmPermission(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android 12+
+            val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
+                data = Uri.parse("package:" + context.packageName)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            context.startActivity(intent)
+        }
+    }
     fun cancelNotifications(context: Context) {
         saveNotificationSettings(context, false, 0, 0)
 
@@ -87,20 +107,23 @@ object NotificationHelper {
         )
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)  // Ensure this exists
             .setContentTitle("Water Reminder")
             .setContentText("Don't forget to track your water intake today!")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)  // Use HIGH for visibility
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
 
         val notificationManager = NotificationManagerCompat.from(context)
         try {
             notificationManager.notify(NOTIFICATION_ID, builder.build())
+            Log.d("NotificationHelper", "Notification displayed successfully")
         } catch (e: SecurityException) {
             e.printStackTrace()
         }
     }
+
+
 
     private fun saveNotificationSettings(context: Context, enabled: Boolean, hour: Int, minute: Int) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)

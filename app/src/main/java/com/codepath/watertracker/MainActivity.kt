@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             deleteWaterEntry(entry)
         }
 
-
+        NotificationHelper.createNotificationChannel(this)
     }
 
     private fun deleteWaterEntry(entry: WaterEntry) {

@@ -1,5 +1,6 @@
 package com.codepath.watertracker
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -59,6 +60,14 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewLifecycleOwner.lifecycleScope.launch {
+            waterEntryDao.getAllEntries().collect { entries ->
+                updateGoalProgress(entries)
+            }
+        }
+    }
     private fun deleteWaterEntry(entry: WaterEntry) {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             waterEntryDao.delete(entry)
@@ -66,6 +75,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateGoalProgress(entries: List<WaterEntry>) {
+        val prefs = requireContext().getSharedPreferences("water_tracker_prefs", Context.MODE_PRIVATE)
+        val dailyGoal = prefs.getInt("water_goal", 2000) // Get saved goal or default to 2000ml
+
         // Calculate today's water intake
         val todayMillis = System.currentTimeMillis()
         val startOfDay = todayMillis - (todayMillis % (24 * 60 * 60 * 1000))
@@ -73,11 +85,11 @@ class HomeFragment : Fragment() {
         val todayAmount = todayEntries.sumOf { it.amount }
 
         // Update progress
-        val dailyGoal = 2000 // 2000ml as example goal
         val progress = (todayAmount.toFloat() / dailyGoal) * 100
         binding.waterProgressBar.progress = progress.toInt()
         binding.waterAmountText.text = "$todayAmount ml / $dailyGoal ml"
     }
+
 
     private fun setRecyclerViewLayoutManager(orientation: Int) {
         binding.waterEntriesRecyclerView.apply {

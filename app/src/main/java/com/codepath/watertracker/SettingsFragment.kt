@@ -3,6 +3,7 @@ package com.codepath.watertracker
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,30 +44,28 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize views
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 101)
+        }
+
         notificationSwitch = view.findViewById(R.id.notificationSwitch)
         timePickerButton = view.findViewById(R.id.timePickerButton)
         waterGoalEditText = view.findViewById(R.id.waterGoalEditText)
         saveGoalButton = view.findViewById(R.id.saveGoalButton)
 
-        // Load saved settings
         loadSettings()
 
-        // Setup listeners
         notificationSwitch.setOnCheckedChangeListener { _, isChecked ->
             timePickerButton.isEnabled = isChecked
 
             if (isChecked) {
-                // Schedule notification with saved time
                 NotificationHelper.scheduleDailyNotification(requireContext(), reminderHour, reminderMinute)
                 updateTimeButtonText()
             } else {
-                // Cancel notifications
                 NotificationHelper.cancelNotifications(requireContext())
                 Toast.makeText(context, "Notifications disabled", Toast.LENGTH_SHORT).show()
             }
 
-            // Save notification preferences
             val prefs = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             prefs.edit().putBoolean(PREF_NOTIFICATIONS_ENABLED, isChecked).apply()
         }
@@ -79,22 +78,16 @@ class SettingsFragment : Fragment() {
             saveWaterGoal()
         }
 
-        // Update time button text
         updateTimeButtonText()
     }
 
     private fun loadSettings() {
         val prefs = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-
-        // Load water goal
-        val waterGoal = prefs.getInt(PREF_WATER_GOAL, 2000) // Default to 2000ml
+        val waterGoal = prefs.getInt(PREF_WATER_GOAL, 2000)
         waterGoalEditText.setText(waterGoal.toString())
-
-        // Load notification settings
         val notificationsEnabled = prefs.getBoolean(PREF_NOTIFICATIONS_ENABLED, false)
         reminderHour = prefs.getInt(PREF_REMINDER_HOUR, 8)
         reminderMinute = prefs.getInt(PREF_REMINDER_MINUTE, 0)
-
         notificationSwitch.isChecked = notificationsEnabled
         timePickerButton.isEnabled = notificationsEnabled
     }
@@ -105,21 +98,14 @@ class SettingsFragment : Fragment() {
             { _, hourOfDay, minute ->
                 reminderHour = hourOfDay
                 reminderMinute = minute
-
-                // Save time preferences
                 val prefs = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 with(prefs.edit()) {
                     putInt(PREF_REMINDER_HOUR, reminderHour)
                     putInt(PREF_REMINDER_MINUTE, reminderMinute)
                     apply()
                 }
-
-                // Update notification schedule
                 NotificationHelper.scheduleDailyNotification(requireContext(), reminderHour, reminderMinute)
-
-                // Update button text
                 updateTimeButtonText()
-
                 Toast.makeText(context, "Reminder time updated", Toast.LENGTH_SHORT).show()
             },
             reminderHour,
@@ -135,10 +121,8 @@ class SettingsFragment : Fragment() {
             try {
                 val goal = goalText.toInt()
                 if (goal > 0) {
-                    // Save the goal
                     val prefs = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                     prefs.edit().putInt(PREF_WATER_GOAL, goal).apply()
-
                     Toast.makeText(context, "Water goal updated to ${goal}ml", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(context, "Please enter a valid goal", Toast.LENGTH_SHORT).show()
@@ -156,7 +140,6 @@ class SettingsFragment : Fragment() {
             set(Calendar.HOUR_OF_DAY, reminderHour)
             set(Calendar.MINUTE, reminderMinute)
         }
-
         val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
         timePickerButton.text = "Reminder Time: ${timeFormat.format(calendar.time)}"
     }
